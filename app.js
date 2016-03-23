@@ -1,5 +1,5 @@
 //Module for weather app
-var weatherApp = angular.module('weatherApp','ngRoute','ngResource',[]);
+var weatherApp = angular.module('weatherApp',['ngRoute','ngResource',]);
 
 //Routes for single page application
 weatherApp.config(function($routeProvider){
