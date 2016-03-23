@@ -6,22 +6,27 @@ weatherApp.config(function ($routeProvider) {
 
 	$routeProvider
 
-		.when('/', {
-			templateUrl: 'pages/home.htm',
-			controller: 'homeController'
-		})
+			.when('/', {
+				templateUrl: 'pages/home.htm',
+				controller: 'homeController'
+			})
 
-		.when('/forecast', {
-			templateUrl: 'pages/forecast.htm',
-			controller: 'forecastController'
-		})
+			.when('/forecast', {
+				templateUrl: 'pages/forecast.htm',
+				controller: 'forecastController'
+			})
+
+			.when('/forecast/:days', {
+				templateUrl: 'pages/forecast.htm',
+				controller: 'forecastController'
+			})
 
 });
 
 
 //SERVICES
-weatherApp.service('cityService', function(){
-	this.city="New York, NY";
+weatherApp.service('cityService', function() {
+	this.city = "New York, NY";
 });
 
 // CONTROLLERS
@@ -35,6 +40,20 @@ weatherApp.controller('homeController', ['$scope','cityService', function($scope
 
 }]);
 
-weatherApp.controller('forecastController', ['$scope','cityService', function($scope, cityService) {
+weatherApp.controller('forecastController', ['$scope','$resource','cityService', function($scope, $resource, cityService) {
 
+	$scope.city = cityService.city;
+
+	$scope.weatherAPPID = '33e00b2d7b558099c75e9542d516b2ee';
+
+	$scope.weatherAPI =
+		$resource("http://api.openweathermap.org/data/2.5/forecast/daily?", {
+			callback: "JSON_CALLBACK"}, {get: { method: "JSONP"}
+		});
+
+		$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt:2, appid: $scope.weatherAPPID});
+
+		$scope.convertToFahrenheit = function(degK){
+			return Math.round((1.8 *(degK - 273))+32)
+		}
 }]);
