@@ -26,7 +26,9 @@ weatherApp.config(function ($routeProvider) {
 
 //SERVICES
 weatherApp.service('cityService', function() {
+
 	this.city = "New York, NY";
+
 });
 
 // CONTROLLERS
@@ -36,13 +38,13 @@ weatherApp.controller('homeController', ['$scope','cityService', function($scope
 
 	$scope.days = $routeParams.days || 2;
 
-	$scope.watch('city', function(){
+	$scope.$watch('city', function(){
 		cityService.city = $scope.city;
 	});
 
 }]);
 
-weatherApp.controller('forecastController', ['$scope','$resource','$routeParams','cityService', function($scope, $resource,$routeParams, cityService) {
+weatherApp.controller('forecastController', ['$scope','$resource','$routeParams','cityService', function($scope, $resource, $routeParams, cityService) {
 
 	$scope.city = cityService.city;
 
@@ -53,7 +55,7 @@ weatherApp.controller('forecastController', ['$scope','$resource','$routeParams'
 			callback: "JSON_CALLBACK"}, {get: { method: "JSONP"}
 		});
 
-		$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt:$scope.days, appid: $scope.weatherAPPID});
+		$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt: $scope.days, appid: $scope.weatherAPPID});
 
 		//Convert the results to Fahrenheit
 		$scope.convertToFahrenheit = function(degK){
