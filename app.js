@@ -57,4 +57,10 @@ weatherApp.controller('forecastController', ['$scope','$resource','cityService',
 		$scope.convertToFahrenheit = function(degK){
 			return Math.round((1.8 *(degK - 273))+32)
 		}
+
+		//Convert the date results
+		$scope.convertToDate = function(dt){
+
+			return new Date(dt* 1000)
+		}
 }]);
