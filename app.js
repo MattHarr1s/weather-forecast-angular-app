@@ -53,6 +53,7 @@ weatherApp.controller('forecastController', ['$scope','$resource','cityService',
 
 		$scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt:2, appid: $scope.weatherAPPID});
 
+		//Convert the results to Fahrenheit
 		$scope.convertToFahrenheit = function(degK){
 			return Math.round((1.8 *(degK - 273))+32)
 		}
