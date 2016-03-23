@@ -32,26 +32,26 @@ weatherApp.service('cityService', function() {
 });
 
 // CONTROLLERS
-weatherApp.controller('homeController', ['$scope','cityService', function($scope, cityService) {
+weatherApp.controller('homeController', ['$scope', 'cityService', function($scope, cityService) {
 
 	$scope.city = cityService.city;
 
-	$scope.days = $routeParams.days || 2;
-
-	$scope.$watch('city', function(){
+	$scope.$watch('city', function() {
 		cityService.city = $scope.city;
 	});
 
 }]);
 
-weatherApp.controller('forecastController', ['$scope','$resource','$routeParams','cityService', function($scope, $resource, $routeParams, cityService) {
+weatherApp.controller('forecastController', ['$scope', '$resource', '$routeParams', 'cityService', function($scope, $resource, $routeParams, cityService) {
 
 	$scope.city = cityService.city;
+
+	$scope.days = $routeParams.days || 2;
 
 	$scope.weatherAPPID = '33e00b2d7b558099c75e9542d516b2ee';
 
 	$scope.weatherAPI =
-		$resource("http://api.openweathermap.org/data/2.5/forecast/daily?", {
+		$resource("http://api.openweathermap.org/data/2.5/forecast/daily", {
 			callback: "JSON_CALLBACK"}, {get: { method: "JSONP"}
 		});
 
@@ -67,4 +67,19 @@ weatherApp.controller('forecastController', ['$scope','$resource','$routeParams'
 
 			return new Date(dt* 1000)
 		}
+
+// Custom directives
+weatherApp.directive("weatherReport", function(){
+	return {
+		restrict: 'E',
+		templateUrl: 'directives/weatherReport.html',
+		replace: true,
+		scope: {
+			weatherDay:"=",
+			convertToStandard: "&",
+			convertToDate: "&",
+			dateFormat: "@"
+		}
+	}
+});
 }]);
